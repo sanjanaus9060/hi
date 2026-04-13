@@ -1,0 +1,13 @@
+{
+  "name": "homemade-delivery",
+  "version": "1.0.0",
+  "description": "HomeMade Food Pickup & Delivery Platform — full-stack prototype",
+  "scripts": {
+    "install-deps": "cd backend && npm install",
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npx nodemon server.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
