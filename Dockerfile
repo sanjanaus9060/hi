@@ -2,7 +2,7 @@ FROM node:18
 
 WORKDIR /app
 
-COPY . .
+COPY homemade-delivery/ .
 
 RUN npm install
 
