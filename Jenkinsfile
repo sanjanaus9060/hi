@@ -2,9 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Code') {
+
+        stage('Cleanup') {
             steps {
-                git branch: 'main', url: 'https://github.com/sanjanaus9060/fresh-nest.git'
+                bat '''
+                for /f "tokens=*" %%i in ('docker ps -aq') do docker rm -f %%i
+                '''
             }
         }
 
