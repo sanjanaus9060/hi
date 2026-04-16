@@ -9,7 +9,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/sanjanaus9060/fresh-nest.git'
+                git branch: 'main', url: 'https://github.com/sanjanaus9060/fresh-nest.git'
             }
         }
 
@@ -26,8 +26,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no ubuntu@%EC2_IP% "
                     docker stop fresh-nest || true &&
                     docker rm fresh-nest || true &&
-                    docker pull sanjanaus9060/fresh-nest || true &&
-                    docker run -d -p 3000:3000 --name fresh-nest sanjanaus9060/fresh-nest
+                    docker run -d -p 3000:3000 --name fresh-nest fresh-nest
                     "
                     """
                 }
