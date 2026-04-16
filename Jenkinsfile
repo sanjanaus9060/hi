@@ -2,7 +2,10 @@ pipeline {
     agent any
 
     environment {
+        EC2_USER = "ubuntu"
         EC2_IP = "16.171.137.210"
+        PEM_FILE = "C:\\Users\\hemam\\Downloads\\fresh-nest-key.pem"
+        IMAGE_NAME = "fresh-nest"
     }
 
     stages {
@@ -15,22 +18,28 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t fresh-nest .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Deploy to EC2') {
             steps {
-                sshagent(['ec2-key']) {
-                    bat """
-                    ssh -o StrictHostKeyChecking=no ubuntu@%EC2_IP% "
-                    docker stop fresh-nest || true &&
-                    docker rm fresh-nest || true &&
-                    docker run -d -p 3000:3000 --name fresh-nest fresh-nest
-                    "
-                    """
-                }
+                bat """
+                ssh -o StrictHostKeyChecking=no -i %PEM_FILE% %EC2_USER%@%EC2_IP% ^
+                "docker stop %IMAGE_NAME% || true && ^
+                 docker rm %IMAGE_NAME% || true && ^
+                 docker run -d -p 3000:3000 --name %IMAGE_NAME% %IMAGE_NAME%"
+                """
             }
+        }
+    }
+
+    post {
+        success {
+            echo '🚀 Deployment Successful!'
+        }
+        failure {
+            echo '❌ Deployment Failed!'
         }
     }
 }
