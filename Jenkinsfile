@@ -4,25 +4,19 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/sanjanaus9060/fresh-nest.git'
+                git branch: 'main', url: 'https://github.com/sanjanaus9060/fresh-nest.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo "Building the application..."
+                bat 'docker build -t fresh-nest .'
             }
         }
 
-        stage('Test') {
+        stage('Run Container') {
             steps {
-                echo "Running tests..."
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Deploying application..."
+                bat 'docker run -d -p 3000:3000 fresh-nest'
             }
         }
     }
