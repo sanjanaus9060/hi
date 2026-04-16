@@ -24,12 +24,7 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                bat """
-                ssh -o StrictHostKeyChecking=no -i %PEM_FILE% %EC2_USER%@%EC2_IP% ^
-                "docker stop %IMAGE_NAME% || true && ^
-                 docker rm %IMAGE_NAME% || true && ^
-                 docker run -d -p 3000:3000 --name %IMAGE_NAME% %IMAGE_NAME%"
-                """
+                bat 'ssh -o StrictHostKeyChecking=no -i %PEM_FILE% %EC2_USER%@%EC2_IP% "docker stop %IMAGE_NAME% || true; docker rm %IMAGE_NAME% || true; docker run -d -p 3000:3000 --name %IMAGE_NAME% %IMAGE_NAME%"'
             }
         }
     }
