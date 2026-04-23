@@ -1,14 +1,27 @@
-pipeline {   
-agent any   
-stages {   
-stage('Build Docker Image') {   
-steps { sh 'docker build -t devops-demo:v1 .' }   
-}   
-stage('Deploy Container') {   
-steps { sh '''   
-docker ps -q | xargs -r docker stop   
-docker ps -aq | xargs -r docker rm   
-docker run -d -p 80:3000 devops-demo:v1   
-''' }   
-}   
-}  }
+pipeline {
+    agent any
+
+    stages {
+        stage('Build React App') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t my-react-app .'
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                sh '''
+                docker rm -f myapp || true
+                docker run -d -p 80:80 --name myapp my-react-app
+                '''
+            }
+        }
+    }
+}
