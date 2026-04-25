@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HomeMade — Home Food Delivery</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ─── TOAST ─── -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ─── HEADER ─── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🍱</span>
+        <span class="logo-text">HomeMade</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-tab="place">Place Order</button>
+        <button class="nav-btn" data-tab="track">Track Order</button>
+        <button class="nav-btn" data-tab="admin">Admin</button>
+        <button class="nav-btn" data-tab="history">My Orders</button>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="nav-btn active" data-tab="place">Place Order</button>
+      <button class="nav-btn" data-tab="track">Track Order</button>
+      <button class="nav-btn" data-tab="admin">Admin</button>
+      <button class="nav-btn" data-tab="history">My Orders</button>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ═══════════════════════════════ TAB 1: PLACE ORDER ═══════════════════════════════ -->
+    <section class="tab active" id="tab-place">
+      <div class="page-hero">
+        <h1>Order <em>Home-Cooked</em> Food</h1>
+        <p>Fresh meals, from someone's kitchen to your door.</p>
+      </div>
+
+      <div class="card form-card" id="orderFormCard">
+        <h2 class="card-title">📋 Schedule a Pickup</h2>
+        <form id="orderForm" novalidate>
+
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label>👤 Your Name</label>
+              <input type="text" id="name" placeholder="e.g. Priya Sharma" required />
+            </div>
+            <div class="form-group">
+              <label>📞 Phone Number</label>
+              <input type="tel" id="phone" placeholder="e.g. 9876543210" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>🏠 Pickup Address <span class="hint">(where food is prepared)</span></label>
+            <input type="text" id="pickupAddress" placeholder="House no., street, locality, city" required />
+          </div>
+
+          <div class="form-group">
+            <label>📍 Delivery Address <span class="hint">(where food should go)</span></label>
+            <input type="text" id="deliveryAddress" placeholder="House no., street, locality, city" required />
+          </div>
+
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label>📅 Pickup Date</label>
+              <input type="date" id="date" required />
+            </div>
+            <div class="form-group">
+              <label>⏰ Pickup Time</label>
+              <input type="time" id="time" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>🍽️ Food Items</label>
+            <input type="text" id="items" placeholder="e.g. Dal Makhani, Roti, Raita" required />
+          </div>
+
+          <div class="form-group">
+            <label>🔢 Quantity</label>
+            <div class="qty-control">
+              <button type="button" class="qty-btn" id="qtyMinus">−</button>
+              <span id="qtyDisplay">1</span>
+              <button type="button" class="qty-btn" id="qtyPlus">+</button>
+            </div>
+            <input type="hidden" id="quantity" value="1" />
+          </div>
+
+          <div class="form-group">
+            <label>📝 Notes <span class="hint">(optional)</span></label>
+            <textarea id="notes" rows="3" placeholder="Any special instructions, dietary needs, allergies..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span>Schedule Pickup</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ORDER SUMMARY (shown after form submit) -->
+      <div class="card summary-card hidden" id="summaryCard">
+        <h2 class="card-title">📦 Order Summary</h2>
+        <div id="summaryContent"></div>
+        <div class="summary-total">
+          <div class="total-row">
+            <span>Food Items</span>
+            <span id="sumItemsCost">₹0</span>
+          </div>
+          <div class="total-row">
+            <span>Delivery Charge</span>
+            <span>₹30</span>
+          </div>
+          <div class="total-row grand">
+            <span>Total</span>
+            <span id="sumTotal">₹30</span>
+          </div>
+        </div>
+        <div class="summary-actions">
+          <button class="btn btn-outline" id="editBtn">✏️ Edit Order</button>
+          <button class="btn btn-primary" id="confirmBtn">✅ Confirm Order</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ TAB 2: TRACK ORDER ═══════════════════════════════ -->
+    <section class="tab" id="tab-track">
+      <div class="page-hero">
+        <h1>Track Your <em>Order</em></h1>
+        <p>Real-time updates, right here.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🔍 Enter Order ID</h2>
+        <div class="track-search">
+          <input type="text" id="trackId" placeholder="e.g. HM-1000" />
+          <button class="btn btn-primary" id="trackBtn">Track</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="trackResult">
+        <div class="track-header">
+          <div>
+            <h3 id="trackOrderId"></h3>
+            <p id="trackCustomer" class="muted"></p>
+          </div>
+          <span class="status-badge" id="trackBadge"></span>
+        </div>
+
+        <!-- Step Progress -->
+        <div class="steps-container">
+          <div class="steps-line">
+            <div class="steps-line-fill" id="stepsLineFill"></div>
+          </div>
+          <div class="steps" id="stepsRow">
+            <div class="step" data-step="0"><div class="step-dot"></div><span>Placed</span></div>
+            <div class="step" data-step="1"><div class="step-dot"></div><span>Scheduled</span></div>
+            <div class="step" data-step="2"><div class="step-dot"></div><span>Picked Up</span></div>
+            <div class="step" data-step="3"><div class="step-dot"></div><span>Out for Delivery</span></div>
+            <div class="step" data-step="4"><div class="step-dot"></div><span>Delivered</span></div>
+          </div>
+        </div>
+
+        <div class="track-details" id="trackDetails"></div>
+
+        <!-- Map placeholder -->
+        <div class="map-placeholder">
+          <div class="map-inner">
+            <span class="map-icon">🗺️</span>
+            <p>Live map tracking available in the full version!!!!!!!!!!!!!!!!!!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ TAB 3: ADMIN ═══════════════════════════════ -->
+    <section class="tab" id="tab-admin">
+      <div class="page-hero">
+        <h1>Admin / <em>Driver Panel</em></h1>
+        <p>Simulate delivery progress for any order.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🚴 Update Order Status</h2>
+        <div class="track-search">
+          <input type="text" id="adminId" placeholder="Enter Order ID (e.g. HM-1000)" />
+          <button class="btn btn-primary" id="adminLoadBtn">Load</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="adminPanel">
+        <div class="track-header">
+          <div>
+            <h3 id="adminOrderId"></h3>
+            <p id="adminCustomer" class="muted"></p>
+          </div>
+          <span class="status-badge" id="adminBadge"></span>
+        </div>
+        <div id="adminStepsContainer" class="steps-container">
+          <div class="steps-line">
+            <div class="steps-line-fill" id="adminLineFill"></div>
+          </div>
+          <div class="steps" id="adminStepsRow">
+            <div class="step" data-step="0"><div class="step-dot"></div><span>Placed</span></div>
+            <div class="step" data-step="1"><div class="step-dot"></div><span>Scheduled</span></div>
+            <div class="step" data-step="2"><div class="step-dot"></div><span>Picked Up</span></div>
+            <div class="step" data-step="3"><div class="step-dot"></div><span>Out for Delivery</span></div>
+            <div class="step" data-step="4"><div class="step-dot"></div><span>Delivered</span></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextStatusBtn" style="margin-top:1.5rem;">
+          ▶ Advance to Next Status
+        </button>
+        <p class="muted" id="adminMsg" style="margin-top:0.75rem;"></p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ TAB 4: MY ORDERS ═══════════════════════════════ -->
+    <section class="tab" id="tab-history">
+      <div class="page-hero">
+        <h1>My <em>Orders</em></h1>
+        <p>Your saved order history.</p>
+      </div>
+      <div id="historyList">
+        <div class="empty-state">
+          <span>🍱</span>
+          <p>No orders yet. Place your first order!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Made with ❤️ for home cooks everywhere · HomeMade © 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
