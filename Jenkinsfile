@@ -2,25 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage('Build React App') {
+        stage('Clone') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
+                echo "Cloning code..."
             }
         }
 
-        stage('Docker Build') {
+        stage('Build') {
             steps {
-                sh 'docker build -t my-react-app .'
+                echo "Building project..."
             }
         }
 
-        stage('Docker Run') {
+        stage('Test') {
             steps {
-                sh '''
-                docker rm -f myapp || true
-                docker run -d -p 80:80 --name myapp my-react-app
-                '''
+                echo "Testing..."
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying..."
             }
         }
     }
