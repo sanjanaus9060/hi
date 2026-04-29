@@ -13,9 +13,42 @@ cd backend
 npm install
 ```
 
-### Step 2 — Start the server
+### Step 2 — Configure MongoDB Atlas (optional)
+
+If you have a MongoDB Atlas cluster, set the Atlas connection string in `MONGODB_URI` before starting the server. Example:
+
+```powershell
+$env:MONGODB_URI='your-atlas-connection-string'
+```
+
+If you do not set `MONGODB_URI`, the app will still run using an in-memory store for orders. In-memory mode is fine for testing, but the data will be lost when the server restarts.
+
+```powershell
+npm start
+```
+
+On macOS/Linux:
 
 ```bash
+export MONGODB_URI='your-atlas-connection-string'
+npm start
+```
+
+If you prefer, you can also use a `.env` helper in your shell.
+
+### Step 3 — Start the server
+
+If port `3000` is already in use, set a different port before starting:
+
+```bash
+export PORT=3001
+npm start
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:PORT='3001'
 npm start
 ```
 
@@ -24,12 +57,71 @@ You'll see:
 🍱 HomeMade Delivery Server running at http://localhost:3000
 ```
 
-### Step 3 — Open the frontend
+### Step 3 — Open the app
 
-Open `frontend/index.html` in your browser (double-click, or drag into Chrome/Edge/Firefox).
+Open `http://localhost:3000` in your browser.
 
-> The backend **must** be running on port 3000 before you open the frontend.
+> The backend now serves the frontend directly, so the app works from the same origin and you do not need to open `frontend/index.html` manually.
 
+---
+
+## ☁️ Deploy on AWS EC2 by public IP
+
+### 1 — Launch an EC2 instance
+- Use Amazon Linux 2023 or Ubuntu 22.04
+- Allow inbound traffic for port `22` (SSH) and port `3000` (HTTP)
+- Optionally attach an Elastic IP for a stable address
+
+### 2 — SSH into the instance
+```bash
+ssh -i /path/to/key.pem ec2-user@PUBLIC_IP
+```
+For Ubuntu:
+```bash
+ssh -i /path/to/key.pem ubuntu@PUBLIC_IP
+```
+
+### 3 — Install Node.js and Git
+Amazon Linux:
+```bash
+sudo yum update -y
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo yum install -y nodejs git
+```
+Ubuntu:
+```bash
+sudo apt update
+sudo apt install -y curl git
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+### 4 — Clone and install the app
+```bash
+cd /home/ec2-user
+git clone <your-repo-url> homemade-delivery
+cd homemade-delivery/backend
+npm install
+```
+
+### 5 — Set MongoDB Atlas URI and port
+```bash
+export MONGODB_URI='your-atlas-connection-string'
+export PORT=3000
+export HOST=0.0.0.0
+npm start
+```
+
+### 6 — Open via public IP
+Open in browser:
+- `http://PUBLIC_IP:3000`
+
+### 7 — Run it as a service
+For production, use a process manager like `pm2` or `systemd` so the server keeps running after logout.
+
+### Notes
+- You do not need local MongoDB installed on the EC2 instance if you use Atlas.
+- If you want to use port `80`, set up `nginx` as a reverse proxy to forward traffic to `localhost:3000`.
 ---
 
 ## 📁 Project Structure

@@ -2,27 +2,25 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone') {
             steps {
-                echo "Cloning code..."
+                git 'https://github.com/sanjanaus9060/hi.git'
             }
         }
 
-        stage('Build') {
+        stage('Install') {
             steps {
-                echo "Building project..."
+                sh 'npm install'
             }
         }
 
-        stage('Test') {
+        stage('Run Backend') {
             steps {
-                echo "Testing..."
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Deploying..."
+                sh '''
+                pkill node || true
+                nohup node server.js > output.log 2>&1 &
+                '''
             }
         }
     }

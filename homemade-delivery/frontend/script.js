@@ -2,7 +2,7 @@
 // Corrected: poll cleanup on tab switch, delegated history events,
 //            button-state race in admin, safe apiFetch wrapper, HTML escaping.
 
-const API = 'http://localhost:3000/api';
+const API = 'http://localhost:5000/api';
 
 // ─── State ─────────────────────────────────────────────────
 let qty = 1;
@@ -52,7 +52,7 @@ async function apiFetch(url, options = {}) {
     res = await fetch(url, options);
   } catch (networkErr) {
     // fetch() itself failed — server is down or CORS blocked before response
-    throw new Error('Cannot reach server. Is the backend running on port 3000?');
+    throw new Error('Cannot reach server. Is the backend running on port 5000?');
   }
 
   const contentType = res.headers.get('content-type') || '';
