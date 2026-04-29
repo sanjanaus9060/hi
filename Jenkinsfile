@@ -1,21 +1,24 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'node'   // make sure NodeJS is configured in Jenkins
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
-                checkout scm   // uses repo + branch from Jenkins job (main)
+                checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                echo "Checking Node and NPM versions..."
+                node -v
+                npm -v
+
+                echo "Installing dependencies..."
+                npm install
+                '''
             }
         }
 
