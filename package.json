@@ -1,0 +1,27 @@
+{
+  "name": "fresh-nest",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u00001\u0000\r\u0000 \u0000#\u0000 \u00001\u0000\r\u0000 \u0000#\u0000 \u00001\u0000\r\u0000 \u0000#\u0000 \u00001\u0000\r\u0000 \u0000#\u0000 \u0000h\u0000i\u0000\r\u0000 \u0000",
+  "main": "script.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjanaus9060/hi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sanjanaus9060/hi/issues"
+  },
+  "homepage": "https://github.com/sanjanaus9060/hi#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
